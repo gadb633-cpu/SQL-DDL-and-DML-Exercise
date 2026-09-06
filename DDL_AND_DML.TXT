@@ -60,3 +60,62 @@ ALTER TABLE medical_files
 CHANGE COLUMN notes medical_notes varchar(255);
 part_2:Insert Data
 step_11
+INSERT INTO caretakers(name,phone,salary,hire_date)
+VALUES ("Maya","050-1111111",9000,2024-01-10),("David","050-2222222",8500,2024-03-20),("Roni","050-3333333",9200,2023-11-01);
+step_12
+INSERT INTO rooms(room_name,max_animals)
+VALUES ("Dog Room",10),	("Cat Room",12),("Small Animals",8);
+step_13
+INSERT INTO animals(Name,animal_type,age,arrival_date,caretaker_id,room_id)
+VALUES ("Max","Dog",4,2025-01-05,(SELECT caretaker_id  FROM caretakers WHERE name = "Maya"),(SELECT room_id FROM rooms WHERE room_name = "Dog Room")),
+("Luna","Cat",2,2025-02-10,(SELECT caretaker_id  FROM caretakers WHERE name = "David"),(SELECT room_id FROM rooms WHERE room_name = "Cat Room")),
+("Charlie","Dog",6,2025-02-15,(SELECT caretaker_id  FROM caretakers WHERE name = "Maya"),(SELECT room_id FROM rooms WHERE room_name = "Dog Room")),
+("Bella","Cat",1,2025-03-01,(SELECT caretaker_id  FROM caretakers WHERE name = "Roni"),(SELECT room_id FROM rooms WHERE room_name = "Cat Room")),
+("Snow","Rabbit",3,2025-03-12,(SELECT caretaker_id  FROM caretakers WHERE name = "Roni"),(SELECT room_id FROM rooms WHERE room_name = "Small Animals"));
+step_14
+INSERT INTO medical_files(animal_id,Weight,is_vaccinated,medical_notes)
+VALUES ((SELECT animal_id FROM animals WHERE name = "max"),22.5,True,"Healthy"),
+((SELECT animal_id FROM animals WHERE name = "Luna"),4.2,True,"Needs special food"),
+((SELECT animal_id FROM animals WHERE name = "Charlie"),28.0,False,"Needs vaccine"),
+((SELECT animal_id FROM animals WHERE name = "Bella"),3.5,True,"Healthy");
+step_15
+INSERT INTO adopters(name,phone,email)
+VALUES ("Daniel","052-1111111","daniel@gmail.com"),
+("Noa","052-2222222","noa@gmail.com"),
+("Amir","052-3333333","amir@gmail.com");
+step_16
+INSERT INTO adoptions(animal_id,adopter_id,adoption_date,status_)
+VALUES ((SELECT animal_id FROM animals WHERE name = "Max"),(SELECT adopter_id FROM adopters WHERE name = "Daniel"),"2025-04-01","pending"),
+((SELECT animal_id FROM animals WHERE name = "Luna"),(SELECT adopter_id FROM adopters WHERE name = "Noa"),"2025-04-03","approved");
+part_3
+step_17
+UPDATE animals
+SET age = 7 
+WHERE name = "Charlie";
+step_18
+UPDATE caretakers 
+SET salary = salary + 500 
+WHERE name ="Maya";
+step_19
+UPDATE medical_files
+SET medical_notes = "Vaccinated"
+WHERE (SELECT animals.animal_id FROM animals WHERE name = "Charlie") = animal_id;
+step_20
+UPDATE animals
+SET room_id = (SELECT room_id FROM rooms WHERE room_name = "Cat Room")
+WHERE name = "Snow";
+step_21
+UPDATE animals
+SET caretaker_id = (SELECT caretaker_id FROM caretakers WHERE name = "Maya")
+WHERE name = "Luna";
+step_22
+UPDATE animals 
+SET age = age +1 
+WHERE animal_type = "Dog";
+step_23
+UPDATE adoptions
+SET status_ = "completed"
+WHERE (SELECT animals.animal_id FROM animals WHERE animals.name = "Luna") = animal_id AND (SELECT adopters.adopter_id FROM adopters WHERE adopters.name = "Noa") = adopter_id;
+step_24
+
+
