@@ -117,5 +117,18 @@ UPDATE adoptions
 SET status_ = "completed"
 WHERE (SELECT animals.animal_id FROM animals WHERE animals.name = "Luna") = animal_id AND (SELECT adopters.adopter_id FROM adopters WHERE adopters.name = "Noa") = adopter_id;
 step_24
-
+UPDATE animals
+SET is_available = False
+WHERE name = "Luna";
+step_25
+UPDATE adoptions
+SET status_ = "review"
+WHERE status_ = "pending";
+part_4
+step_26
+DELETE FROM adoptions WHERE (SELECT animals.animal_id FROM animals WHERE animals.name = "Max") = animal_id AND (SELECT adopters.adopter_id FROM adopters WHERE adopters.name = "Daniel") = adopter_id;
+step_27
+DELETE FROM medical_files
+WHERE (SELECT animals.animal_id FROM animals WHERE animals.name = "Bella") = animal_id ;
+step_28
 
