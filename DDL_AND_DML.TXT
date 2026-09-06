@@ -1,1 +1,62 @@
-
+step_1
+CREATE DATABASE animal_shelter;
+step_2
+CREATE TABLE caretakers(
+	caretaker_id int PRIMARY KEY AUTO_INCREMENT,
+    name varchar(100) NOT null,
+    phone varchar(20) NOT null,
+    salary DECIMAL(10,2) CHECK (salary > 0));
+step_3
+CREATE TABLE rooms(
+	room_id int PRIMARY KEY AUTO_INCREMENT,
+    room_name varchar(50) NOT null UNIQUE,
+    max_animals int CHECK (max_animals > 0));
+step_4
+CREATE TABLE animals(
+	animal_id int PRIMARY KEY AUTO_INCREMENT,
+    name varchar(100) NOT null,
+    animal_type varchar(50) NOT null,
+    age INT CHECK (age > 0),
+    arrival_date DATE NOT null,
+    caretaker_id int,
+    room_id int,
+    FOREIGN KEY (caretaker_id) 
+    REFERENCES caretakers(caretaker_id),
+    FOREIGN KEY (room_id) 
+    REFERENCES rooms(room_id));
+step_5
+CREATE TABLE medical_files(
+	animal_id int PRIMARY KEY,
+    FOREIGN KEY (animal_id) 
+    REFERENCES animals(animal_id),
+    weight DECIMAL(5,2) CHECK (weight >0),
+    is_vaccinated bool DEFAULT FALSE,
+    notes VARCHAR(255));
+step_6
+CREATE TABLE adopters(
+	adopter_id int PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT null,
+    phone VARCHAR(20) not null,
+    email VARCHAR(100) NOT null UNIQUE);
+step_7
+CREATE TABLE adoptions(
+	animal_id int,
+    FOREIGN key (animal_id)
+    REFERENCES animals(animal_id),
+    adopter_id int,
+    FOREIGN key (adopter_id)
+    REFERENCES adopters(adopter_id),
+    adoption_date date NOT null,
+    status_ VARCHAR(30) DEFAULT "pending",
+	PRIMARY key (animal_id,adopter_id));
+step_8
+ALTER TABLE animals
+ADD is_available bool DEFAULT True;
+step_9
+ALTER TABLE caretakers
+ADD hire_date date;
+step_10
+ALTER TABLE medical_files
+CHANGE COLUMN notes medical_notes varchar(255);
+part_2:Insert Data
+step_11
